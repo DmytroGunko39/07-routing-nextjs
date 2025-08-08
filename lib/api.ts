@@ -1,5 +1,10 @@
 import axios from 'axios';
-import type { NewNoteData, Note, DeleteNoteResponse } from '../types/note';
+import type {
+  NewNoteData,
+  Note,
+  DeleteNoteResponse,
+  NoteTag,
+} from '../types/note';
 
 export interface FetchNotesResponse {
   notes: Note[];
@@ -11,7 +16,9 @@ export interface FetchNotesResponse {
 const myKey = process.env.NEXT_PUBLIC_NOTEHUB_TOKEN;
 
 if (!myKey) {
-  throw new Error('NOTEHUB_TOKEN is missing in environment variables');
+  throw new Error(
+    'NEXT_PUBLIC_NOTEHUB_TOKEN is missing in environment variables',
+  );
 }
 
 axios.defaults.baseURL = 'https://notehub-public.goit.study/api';
@@ -56,6 +63,15 @@ export const deleteNote = async (
 
 export const fetchNoteById = async (id: string) => {
   const response = await axios.get<Note>(`/notes/${id}`, {
+    headers: {
+      Authorization: `Bearer ${myKey}`,
+    },
+  });
+  return response.data;
+};
+
+export const fetchNoteByTag = async (tag: string): Promise<NoteTag[]> => {
+  const response = await axios.get<NoteTag[]>(`/notes/${tag}`, {
     headers: {
       Authorization: `Bearer ${myKey}`,
     },
