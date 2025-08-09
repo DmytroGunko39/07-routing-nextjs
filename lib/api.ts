@@ -1,10 +1,5 @@
 import axios from 'axios';
-import type {
-  NewNoteData,
-  Note,
-  DeleteNoteResponse,
-  NoteTag,
-} from '../types/note';
+import type { NewNoteData, Note, DeleteNoteResponse } from '../types/note';
 
 export interface FetchNotesResponse {
   notes: Note[];
@@ -27,12 +22,14 @@ export const fetchNotes = async (
   page: number = 1,
   perPage: number = 12,
   search: string = '',
+  tag?: string,
 ): Promise<FetchNotesResponse> => {
   const response = await axios.get<FetchNotesResponse>(`/notes`, {
     params: {
       page,
       perPage,
       ...(search.trim() ? { search: search.trim() } : {}),
+      ...(tag ? { tag } : {}),
     },
     headers: {
       Authorization: `Bearer ${myKey}`,
@@ -70,11 +67,14 @@ export const fetchNoteById = async (id: string) => {
   return response.data;
 };
 
-export const fetchNoteByTag = async (tag: string): Promise<NoteTag[]> => {
-  const response = await axios.get<NoteTag[]>(`/notes/${tag}`, {
-    headers: {
-      Authorization: `Bearer ${myKey}`,
-    },
-  });
-  return response.data;
-};
+// export const fetchNoteByTag = async (tag?: string): Promise<Note[]> => {
+//   const params = tag && tag !== 'All' ? { tag } : {};
+
+//   const response = await axios.get<Note[]>(`/notes/`, {
+//     headers: {
+//       Authorization: `Bearer ${myKey}`,
+//     },
+//     params,
+//   });
+//   return response.data;
+// };

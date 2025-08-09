@@ -18,5 +18,3 @@ export interface NewNoteData {
 export interface DeleteNoteResponse {
   success: boolean;
 }
-
-//export interface Category {}

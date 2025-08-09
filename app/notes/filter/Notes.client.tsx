@@ -1,6 +1,6 @@
 'use client';
 
-import css from '../../components/NotesPage/NotesPage.module.css';
+import css from '@/components/NotesPage/NotesPage.module.css';
 import NoteList from '@/components/NoteList/NoteList';
 import Pagination from '@/components/Pagination/Pagination';
 import SearchBox from '@/components/SearchBox/SearchBox';
@@ -10,12 +10,19 @@ import { useState } from 'react';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { fetchNotes, FetchNotesResponse } from '@/lib/api';
 import { useDebouncedCallback } from 'use-debounce';
+import { Note } from '@/types/note';
 
 export interface NoteClientProps {
-  initialData: FetchNotesResponse;
+  initialData?: FetchNotesResponse;
+  notes?: Note[];
+  tag?: string;
 }
 
-export default function NotesClient({ initialData }: NoteClientProps) {
+export default function NotesClient({
+  initialData,
+  notes,
+  tag,
+}: NoteClientProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const perPage = 12;
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -30,16 +37,17 @@ export default function NotesClient({ initialData }: NoteClientProps) {
   }, 500);
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: ['notes', searchTopic, currentPage],
-    queryFn: () => fetchNotes(currentPage, perPage, searchTopic),
+    queryKey: ['notes', searchTopic, currentPage, tag],
+    queryFn: () => fetchNotes(currentPage, perPage, searchTopic, tag),
     placeholderData: keepPreviousData,
     initialData,
+    enabled: !notes,
   });
 
   if (isLoading) return <p>Loading...</p>;
   if (isError) return <h2>Failed to load notes</h2>;
 
-  const notes = data?.notes || [];
+  const notesToDisplay = notes || data?.notes || [];
   const totalPages = data?.totalPages || 1;
 
   return (
@@ -59,7 +67,7 @@ export default function NotesClient({ initialData }: NoteClientProps) {
               Create note +
             </button>
           </header>
-          {data && !isLoading && <NoteList notes={notes} />}
+          {data && !isLoading && <NoteList notes={notesToDisplay} />}
           {isModalOpen && (
             <Modal onClose={closeModal}>
               <NoteForm onCloseModal={closeModal} />
