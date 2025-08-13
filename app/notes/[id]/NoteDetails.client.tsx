@@ -35,7 +35,7 @@ const NoteDetailsClient = () => {
         <div className={css.header}>
           <h2>{note.title}</h2>
         </div>
-        <p className={css.content}>{note.content}</p>
+        <p className={css.content}>{note.content || 'No content available.'}</p>
         <p className={css.date}>{formattedDate}</p>
       </div>
     </div>

@@ -24,7 +24,7 @@ export default function NotesClient({
   tag,
 }: NoteClientProps) {
   const [currentPage, setCurrentPage] = useState(1);
-  const perPage = 12;
+  const perPage = 9;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
