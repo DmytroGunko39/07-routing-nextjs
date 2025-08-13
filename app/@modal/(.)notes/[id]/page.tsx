@@ -1,33 +1,28 @@
 import NotePreview from './NotePreview.client';
-import css from './NotePreview.module.css';
 import { fetchNoteById } from '@/lib/api';
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from '@tanstack/react-query';
 
 type Props = {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 };
 
 const PreviewPage = async ({ params }: Props) => {
   const { id } = await params;
-  const note = await fetchNoteById(id);
+  const querClient = new QueryClient();
 
-  const formattedDate = note.updatedAt
-    ? `Update at:${note.updatedAt}`
-    : `Create at:${note.createdAt}`;
+  await querClient.prefetchQuery({
+    queryKey: ['note', id],
+    queryFn: () => fetchNoteById(id),
+  });
 
   return (
-    <NotePreview>
-      <div className={css.container}>
-        <div className={css.item}>
-          <div className={css.header}>
-            <h2>{note.title}</h2>
-          </div>
-          <p className={css.content}>
-            {note.content || 'No content available.'}
-          </p>
-          <p className={css.date}>{formattedDate}</p>
-        </div>
-      </div>
-    </NotePreview>
+    <HydrationBoundary state={dehydrate(querClient)}>
+      <NotePreview id={id} />
+    </HydrationBoundary>
   );
 };
 
