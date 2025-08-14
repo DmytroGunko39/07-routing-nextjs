@@ -1,4 +1,4 @@
-import NotesClient from './Notes.client';
+import NotesClient from './[...slug]/Notes.client';
 import { fetchNotes } from '@/lib/api';
 
 const Notes = async () => {
