@@ -3,16 +3,12 @@ import React from 'react';
 
 type Props = {
   children: React.ReactNode;
-  sidebar: React.ReactNode;
 };
 
-const NoteLayout = ({ children, sidebar }: Props) => {
+const NoteLayout = ({ children }: Props) => {
   return (
     <section>
-      <LayoutNotes>
-        {sidebar}
-        {children}
-      </LayoutNotes>
+      <LayoutNotes>{children}</LayoutNotes>
     </section>
   );
 };

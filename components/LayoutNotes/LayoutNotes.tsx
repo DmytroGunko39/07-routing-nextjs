@@ -1,4 +1,4 @@
-import SidebarNotes from '../SidebarNotes/SidebarNotes';
+import DefaultSidebar from '@/app/notes/filter/@sidebar/default';
 import css from '@/components/LayoutNotes/LayoutNotes.module.css';
 
 type Props = {
@@ -9,7 +9,7 @@ const LayoutNotes = ({ children }: Props) => {
   return (
     <div className={css.container}>
       <aside className={css.sidebar}>
-        <SidebarNotes />
+        <DefaultSidebar />
       </aside>
 
       <main className={css.notesWrapper}>{children}</main>
