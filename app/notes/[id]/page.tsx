@@ -12,15 +12,15 @@ interface NotePageProps {
 
 const NoteDetails = async ({ params }: NotePageProps) => {
   const { id } = await params;
-  const querClient = new QueryClient();
+  const queryClient = new QueryClient();
 
-  await querClient.prefetchQuery({
+  await queryClient.prefetchQuery({
     queryKey: ['note', id],
     queryFn: () => fetchNoteById(id),
   });
 
   return (
-    <HydrationBoundary state={dehydrate(querClient)}>
+    <HydrationBoundary state={dehydrate(queryClient)}>
       <NoteDetailsClient />
     </HydrationBoundary>
   );

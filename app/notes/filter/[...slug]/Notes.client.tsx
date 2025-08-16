@@ -18,18 +18,13 @@ export interface NoteClientProps {
   tag?: string;
 }
 
-export default function NotesClient({
-  initialData,
-  notes,
-  tag,
-}: NoteClientProps) {
+export default function NotesClient({ initialData, tag }: NoteClientProps) {
   const [currentPage, setCurrentPage] = useState(1);
-  const perPage = 9;
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [searchTopic, setSearchTopic] = useState('');
+  const perPage = 9;
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
-
-  const [searchTopic, setSearchTopic] = useState('');
 
   const updateSearchTopic = useDebouncedCallback((newSearchTopic: string) => {
     setSearchTopic(newSearchTopic);
@@ -38,16 +33,21 @@ export default function NotesClient({
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ['notes', searchTopic, currentPage, tag],
-    queryFn: () => fetchNotes(currentPage, perPage, searchTopic, tag),
+    queryFn: () =>
+      fetchNotes({
+        page: currentPage,
+        perPage,
+        search: searchTopic,
+        ...(tag !== 'All notes' && { tag }),
+      }),
     placeholderData: keepPreviousData,
     initialData,
-    enabled: !notes,
   });
 
   if (isLoading) return <p>Loading...</p>;
   if (isError) return <h2>Failed to load notes</h2>;
 
-  const notesToDisplay = notes || data?.notes || [];
+  const notesToDisplay = data?.notes || [];
   const totalPages = data?.totalPages || 1;
 
   return (

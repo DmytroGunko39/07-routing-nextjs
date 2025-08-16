@@ -3,9 +3,16 @@ import type { NewNoteData, Note, DeleteNoteResponse } from '../types/note';
 
 export interface FetchNotesResponse {
   notes: Note[];
-  totalPages: number;
+  totalPages?: number;
   page: number;
   perPage: number;
+}
+
+export interface FetchNotesParams {
+  page: number;
+  perPage: number;
+  search: string;
+  tag?: string;
 }
 
 const myKey = process.env.NEXT_PUBLIC_NOTEHUB_TOKEN;
@@ -18,12 +25,12 @@ if (!myKey) {
 
 axios.defaults.baseURL = 'https://notehub-public.goit.study/api';
 
-export const fetchNotes = async (
-  page: number = 1,
-  perPage: number = 12,
-  search: string = '',
-  tag?: string,
-): Promise<FetchNotesResponse> => {
+export const fetchNotes = async ({
+  page = 1,
+  perPage = 9,
+  search = '',
+  tag,
+}: Partial<FetchNotesParams> = {}): Promise<FetchNotesResponse> => {
   const response = await axios.get<FetchNotesResponse>(`/notes`, {
     params: {
       page,
@@ -35,6 +42,8 @@ export const fetchNotes = async (
       Authorization: `Bearer ${myKey}`,
     },
   });
+  console.log('fetchNotes params:', { page, perPage, search, tag });
+
   return response.data;
 };
 

@@ -5,7 +5,14 @@ import Link from 'next/link';
 import { useState } from 'react';
 
 const TagsMenu = () => {
-  const tags: NoteTag[] = ['Work', 'Personal', 'Meeting', 'Shopping', 'Todo'];
+  const tags: NoteTag[] = [
+    'All notes',
+    'Work',
+    'Personal',
+    'Meeting',
+    'Shopping',
+    'Todo',
+  ];
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -17,15 +24,25 @@ const TagsMenu = () => {
       </button>
       {isOpen && (
         <ul className={css.menuList}>
-          <li className={css.menuItem}>
-            <Link href={`/notes/filter`} className={css.menuLink}>
+          {/* <li className={css.menuItem}>
+            <Link
+              href={`/notes/filter`}
+              className={css.menuLink}
+              onClick={() => setIsOpen(false)}
+            >
               All notes
             </Link>
-          </li>
+          </li> */}
 
           {tags.map((tag) => (
             <li key={tag} className={css.menuItem}>
-              <Link href={`/notes/filter/${tag}`} className={css.menuLink}>
+              <Link
+                href={
+                  tag === 'All notes' ? 'noters/filter' : `/notes/filter/${tag}`
+                }
+                className={css.menuLink}
+                onClick={() => setIsOpen(false)}
+              >
                 {tag}
               </Link>
             </li>
