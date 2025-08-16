@@ -10,12 +10,11 @@ import { useState } from 'react';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { fetchNotes, FetchNotesResponse } from '@/lib/api';
 import { useDebouncedCallback } from 'use-debounce';
-import { Note } from '@/types/note';
+import { NoteTag } from '@/types/note';
 
 export interface NoteClientProps {
-  initialData?: FetchNotesResponse;
-  notes?: Note[];
-  tag?: string;
+  initialData: FetchNotesResponse;
+  tag?: NoteTag | undefined | 'All';
 }
 
 export default function NotesClient({ initialData, tag }: NoteClientProps) {
@@ -38,7 +37,7 @@ export default function NotesClient({ initialData, tag }: NoteClientProps) {
         page: currentPage,
         perPage,
         search: searchTopic,
-        ...(tag !== 'All notes' && { tag }),
+        ...(tag && tag !== 'All' ? { tag } : {}),
       }),
     placeholderData: keepPreviousData,
     initialData,

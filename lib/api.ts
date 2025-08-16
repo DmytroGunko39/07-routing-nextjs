@@ -9,9 +9,9 @@ export interface FetchNotesResponse {
 }
 
 export interface FetchNotesParams {
-  page: number;
-  perPage: number;
-  search: string;
+  page?: number;
+  perPage?: number;
+  search?: string;
   tag?: string;
 }
 
@@ -30,7 +30,7 @@ export const fetchNotes = async ({
   perPage = 9,
   search = '',
   tag,
-}: Partial<FetchNotesParams> = {}): Promise<FetchNotesResponse> => {
+}: FetchNotesParams = {}): Promise<FetchNotesResponse> => {
   const response = await axios.get<FetchNotesResponse>(`/notes`, {
     params: {
       page,
@@ -42,7 +42,6 @@ export const fetchNotes = async ({
       Authorization: `Bearer ${myKey}`,
     },
   });
-  console.log('fetchNotes params:', { page, perPage, search, tag });
 
   return response.data;
 };
