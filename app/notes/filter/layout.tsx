@@ -1,13 +1,18 @@
 import LayoutNotes from '@/components/LayoutNotes/LayoutNotes';
+import React from 'react';
 
 type Props = {
   children: React.ReactNode;
+  sidebar: React.ReactNode;
 };
 
-const NoteLayout = ({ children }: Props) => {
+const NoteLayout = ({ children, sidebar }: Props) => {
   return (
     <section>
-      <LayoutNotes>{children}</LayoutNotes>
+      <LayoutNotes>
+        {sidebar}
+        {children}
+      </LayoutNotes>
     </section>
   );
 };

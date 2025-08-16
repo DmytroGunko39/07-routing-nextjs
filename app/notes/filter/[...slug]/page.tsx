@@ -8,7 +8,7 @@ type Props = {
 
 const NotesFilterPage = async ({ params }: Props) => {
   const { slug } = await params;
-  const tag = slug[0] as NoteTag | 'All';
+  const tag = slug[0] as NoteTag | 'All' | undefined;
   const initialData = await fetchNotes({
     page: 1,
     search: '',
