@@ -11,6 +11,7 @@ const NotesFilterPage = async ({ params }: Props) => {
   const tag = slug[0] as NoteTag | 'All' | undefined;
   const initialData = await fetchNotes({
     page: 1,
+    perPage: 9,
     search: '',
     ...(tag && tag !== 'All' && { tag }),
   });

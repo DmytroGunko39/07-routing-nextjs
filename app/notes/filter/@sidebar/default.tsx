@@ -2,7 +2,7 @@ import css from './SidebarNotes.module.css';
 import { NoteTag } from '@/types/note';
 import Link from 'next/link';
 
-const DefaultSidebar = async () => {
+const SidebarNotes = async () => {
   const tags: NoteTag[] = ['Work', 'Personal', 'Meeting', 'Shopping', 'Todo'];
 
   return (
@@ -24,4 +24,4 @@ const DefaultSidebar = async () => {
   );
 };
 
-export default DefaultSidebar;
+export default SidebarNotes;
